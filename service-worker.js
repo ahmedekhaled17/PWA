@@ -1,4 +1,6 @@
 const CACHE_NAME = "zaqapp-cache-v1";
+const API_URL = "https://jsonplaceholder.typicode.com/posts";
+
 const ASSETS = [
   "./",
   "./index.html",
@@ -7,11 +9,11 @@ const ASSETS = [
   "./style.css",
   "./app.js",
   "./manifest.json",
+  "./offline.html",
   "./images/icons/web-app-manifest-192x192.png",
   "./images/icons/web-app-manifest-512x512.png"
 ];
 
-// Install Service Worker
 self.addEventListener("install", event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
@@ -19,7 +21,6 @@ self.addEventListener("install", event => {
   self.skipWaiting();
 });
 
-// Activate Service Worker
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys => {
@@ -28,9 +29,24 @@ self.addEventListener("activate", event => {
   );
 });
 
-// Fetch from cache or network
 self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request).then(res => res || fetch(event.request))
-  );
+  if (event.request.url === API_URL) {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          const resClone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, resClone));
+          return response;
+        })
+        .catch(() => caches.match(event.request))
+    );
+  } else {
+    event.respondWith(
+      fetch(event.request).catch(() => {
+        return caches.match(event.request).then(response => {
+          return response || caches.match('./offline.html');
+        });
+      })
+    );
+  }
 });

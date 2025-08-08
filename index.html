@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,15 +9,21 @@
   <link rel="manifest" href="manifest.json" />
   <title>ZaqApp - Home</title>
 </head>
+
 <body>
   <h1>Welcome to ZaqApp</h1>
   <nav>
-    <a href="index.html">Home</a> | 
-    <a href="about.html">About</a> | 
+    <a href="index.html">Home</a> |
+    <a href="about.html">About</a> |
     <a href="contact.html">Contact</a>
   </nav>
   <p>This is a simple PWA app.</p>
 
+  <div id="connection-status" style="display:none;">
+  </div>
+  <div id="data-container">
+    <p>Loading latest posts...</p>
+  </div>
   <script src="app.js"></script>
 </body>
 </html>

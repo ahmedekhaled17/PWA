@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background: #0f0f23;
+  background: black;
   color: white;
   text-align: center;
   padding: 20px;
@@ -14,4 +14,9 @@ nav a {
 
 nav a:hover {
   text-decoration: underline;
+}
+.offline-message {
+  text-align: center;
+  padding: 40px;
+  color: red;
 }
